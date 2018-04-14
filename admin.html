@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./style/styleAdmin.css">
+</head>
+<body>
+    <div id="app">
+        <div class="row">
+            <div class="col-12">
+                <h1>Admin Page</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8 col-sm-12">
+                <table class="tableAdmin table table-hover">
+                    <tr>
+                        <th>id.</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Product Image</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr v-for="product in products">
+                        <td>{{product.id}}</td>
+                        <td>{{product.name}}</td>
+                        <td>{{product.price}}</td>
+                        <td><img style="width:100%; max-width:100px" v-bind:src="product.img"></td>
+                        <td><button class="btn btn-primary">Edit</button><button class="btn btn-danger">Remove</button></td>
+                    </tr>
+                </table>
+                
+            </div>
+            <div class="col-lg-2">
+                <h6><a href="addItem.html">Update Item</a></h6>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./script/tableAdminContent.js"></script>
+    <script src="./script/vue.js"></script>
+</body>
+</html>
