@@ -1,0 +1,21 @@
+.register{
+    display: flex;
+    flex-direction: column;
+}
+
+label{
+    margin-top: 2%
+}
+
+.buttons{
+    margin: 3%;
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    color: white;
+    font-weight: bold;
+    margin: 10px;
+    margin-left: 20px;
+}

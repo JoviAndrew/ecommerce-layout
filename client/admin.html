@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./style/styleAdmin.css">
+</head>
+<body>
+    <div id="appAdmin">
+        <div class="row">
+            <div class="navbar row col-12 navbar-dark bg-primary">
+                <div class="col-2">
+                    <a href="index.html"><h3 class="title">e-Come</h3></a>
+                </div>
+                <div class="col-9">
+                    <a class="btn btn-primary" href="index.html">Home</a>
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-primary" @click="doLogout">Logout</button>
+                </div>
+            </div>
+            <div class="titlePage col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Admin Page</h1>
+                    </div>
+                    <div class="col-12">
+                        <button class="addItem btn btn-primary" data-toggle="modal" data-target="#modalItem">Add Item</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8 col-sm-12">
+                <table class="tableAdmin table table-hover">
+                    <tr>
+                        <th>No.</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Product Image</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr v-for="(product, index) in products">
+                        <td>{{index + 1}}</td>
+                        <td>{{product.item_name}}</td>
+                        <td>{{product.item_price}}</td>
+                        <td><img style="width:100%; max-width:100px" v-bind:src="product.item_img"></td>
+                        <td><button class="btn btn-primary" data-toggle="modal" data-target="#modalUpdate" v-on:click="sendToModal(product)">Edit</button><button class="btn btn-danger" @click="deleteItem(product._id)">Remove</button></td>
+                    </tr>
+                </table>
+                
+            </div>
+            <div class="col-lg-2 col-sm-12"></div>
+            <div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title">Add Item</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action=""></form>
+                        <label>Item Name:</label>
+                        <input type="text" v-model="itemname">
+                        <label>Price:</label>
+                        <input type="text" v-model="price">
+                        <label>Image:</label>
+                        <input type="file" @change="onFilePicked" accept="image/*">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" v-on:click="addProduct()" data-dismiss="modal">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Update Modal -->
+            <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Item</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action=""></form>
+                            <label>Item Name:</label>
+                            <input type="text" v-model="itemname">
+                            <label>Price:</label>
+                            <input type="text" v-model="price">
+                            <label>Current Image:</label>
+                            <img class="modalImage" :src="itemimg">
+                            <label>Update Image:</label>
+                            <input type="file" @change="onFilePicked" accept="image/*">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" v-on:click="updateItem()" data-dismiss="modal">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./script/adminVue.js"></script>
+</body>
+</html>
