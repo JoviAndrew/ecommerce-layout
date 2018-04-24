@@ -4,8 +4,8 @@ module.exports = {
     addItems(req, res){    
         console.log('test masuk', req.body)    
         items.create({
-            item_name: req.body.itemname,
-            item_img: req.file.cloudStoragePublicUrl,
+            item_name: req.body.name,
+            item_img: req.body.img,
             item_price: req.body.price,
         })
         .then(function(response){
@@ -27,7 +27,7 @@ module.exports = {
                     '_id': req.params.id,
                 },
                 update: {
-                   item_name: req.body.itemname,
+                   item_name: req.body.name,
                    item_img: req.body.img,
                    item_price: req.body.price,
                 }

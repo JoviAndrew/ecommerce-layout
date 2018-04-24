@@ -6,9 +6,11 @@ new Vue({
         itemimg: null,
         price: '',
         productId: '',
+        formData: new FormData(),
+        image_url: ''
     },
     created: function() {
-        this.reset();
+        this.getAllProducts()
         let role = localStorage.getItem('role');
         if(role != 'admin'){
             window.location.href = 'index.html'
@@ -19,10 +21,7 @@ new Vue({
             let self = this
             axios.get('http://localhost:3000/item/show')
             .then(function(itemData){
-                let tempArr = itemData.data.data;
-                tempArr.forEach(function(items){
-                    self.products.push(items);
-                })
+                self.products = itemData.data.data;
             })
             .catch(function(err){
                 console.log(err);
@@ -36,53 +35,59 @@ new Vue({
         addProduct: function(){
             let name = this.itemname
             let prc = this.price
-            let img = this.formdata
+            let self = this
 
-            axios.post('http://localhost:3000/item/add', 
-            {
-                itemname: name,
-                price: prc,
-                img: img
-            })
+            axios.post('http://localhost:3000/item/upload', this.formData)
             .then(function(response){
-                // alert(response.message)
-                console.log('Berhasil! ===========', response)
+                let link = response.data.link
+                axios.post('http://localhost:3000/item/add', 
+                {
+                    name: name,
+                    price: prc,
+                    img: link
+                })
+                .then(function(response){
+                    alert(response.data.message);
+                    console.log(response)
+                    self.getAllProducts()
+                })
             })
             .catch(function(err){
                 console.log(err)
             })
-            this.reset()
         },
-        onFilePicked: function(event){
-            const files = event.target.files
-            let filename = files[0].name
-            if (filename.lastIndexOf('.') <=0){
-                alert('Invalid file input!')
-            }
-            
-            console.log(files[0]);
-            this.itemimg = files[0];
-            // this.
-            // const fileReader = new FileReader()
-            // fileReader.addEventListener('load', () => {
-            //     this.itemimg = fileReader.result
-            // })
-            // fileReader.readAsDataURL(files[0])
-            // console.log(typeof(fileReader.result));
+        onFilePicked (event) {
+            let files = event.target.files
+            console.log(files[0])
+            this.createImage(files[0])
+            this.formData.set('img', files[0])
+        },
+        createImage(file){
+            var reader = new FileReader()
+            reader.onload = (e) => {
+                this.image_url = e.target.result;
+            };
+            reader.readAsDataURL(file) 
         },
         updateItem(){
             let name = this.itemname
             let prc = this.price
-            let img = this.formdata
             let id = this.productId
+            let self = this
 
-            axios.put(`http://localhost:3000/item/update/${id}`, {
-                itemname: name,
-                price: prc,
-                img: img
-            })
+            axios.post('http://localhost:3000/item/upload', this.formData)
             .then(function(response){
-                console.log(response)
+                let link = response.data.link
+                axios.put(`http://localhost:3000/item/update/${id}`, {
+                    name: name,
+                    price: prc,
+                    img: link
+                })
+                .then(function(response){
+                    alert(response.data.message)
+                    console.log(response)
+                    self.getAllProducts()
+                })
             })
             .catch(function(err){
                 console.log(err);
@@ -93,7 +98,7 @@ new Vue({
             axios.delete(`http://localhost:3000/item/delete/${id}`)
             .then(function(response){
                 alert(response.data.message);
-                self.reset;
+                self.getAllProducts();
             })
             .catch(function(err){
                 alert('Something went wrong!');
@@ -104,10 +109,6 @@ new Vue({
             alert('Successfully Logged out')
             localStorage.clear();
             window.location.href = 'index.html'
-        },
-        reset(){
-            this.products = [];
-            this.getAllProducts();
         },
         sendToModal(product){
             this.itemname = product.item_name;

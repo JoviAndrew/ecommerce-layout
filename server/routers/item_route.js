@@ -4,12 +4,9 @@ const uploadFile = require('../middleware/upload');
 
 router.get('/show', item.getItems);
 
-router.post('/add', 
-            uploadFile.multer.single('img'), 
-            uploadFile.sendUploadToGCS, 
-            item.addItems);
+router.post('/add', item.addItems);
 
-router.post('/image',
+router.post('/upload',
             uploadFile.multer.single('img'), 
             uploadFile.sendUploadToGCS, 
             item.uploadImg)

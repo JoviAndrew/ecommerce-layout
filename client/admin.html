@@ -88,7 +88,6 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action=""></form>
                             <label>Item Name:</label>
                             <input type="text" v-model="itemname">
                             <label>Price:</label>
@@ -96,7 +95,7 @@
                             <label>Current Image:</label>
                             <img class="modalImage" :src="itemimg">
                             <label>Update Image:</label>
-                            <input type="file" @change="onFilePicked" accept="image/*">
+                            <input type="file" @change="onFilePicked">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" v-on:click="updateItem()" data-dismiss="modal">Save changes</button>
